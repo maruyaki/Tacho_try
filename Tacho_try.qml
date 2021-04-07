@@ -1,17 +1,15 @@
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.0
-import QtQuick.Scene2D 2.9
+import QtQuick 2.11
+import QtQuick.Window 2.11
+
 
 Window {
     width: 800
-    height: 600
+    height: 480
     visible: true
     color: "#3a3838"
     title: qsTr("taco")
 
-
+/*
     RoundButton {
         id: roundButton
         x: Window.width / 3 - Window.height * 0.35
@@ -20,6 +18,7 @@ Window {
         height: Window.height * 0.7
         text: "+"
     }
+*/
 
     Rectangle {
         id: rectTacho
@@ -33,7 +32,7 @@ Window {
             origin.x: rectTacho.width /2
             origin.y: 0
             axis {x: 0; y: 0; z: 1}
-            angle: 360 * txtRpm.text / 130000
+            angle: 360 * txtRpm.text / 13000
         }
     }
 
