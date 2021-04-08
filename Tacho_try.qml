@@ -6,19 +6,9 @@ Window {
     width: 800
     height: 480
     visible: true
-    color: "#3a3838"
+    color: "#000000"
     title: qsTr("taco")
 
-/*
-    RoundButton {
-        id: roundButton
-        x: Window.width / 3 - Window.height * 0.35
-        y: Window.height / 2 - Window.height * 0.35
-        width: Window.height * 0.7
-        height: Window.height * 0.7
-        text: "+"
-    }
-*/
 
     Rectangle {
         id: rectTacho
@@ -40,7 +30,7 @@ Window {
         id: txtRpm
         x: rectTacho.height / 2 + rectTacho.x
         y: rectTacho.height / 4 + rectTacho.y
-        color: "#000000"
+        color: "#ffffff"
         text: qsTr("4500")
         font.pixelSize: 40
         horizontalAlignment: Text.AlignRight
@@ -53,6 +43,32 @@ Window {
         onTriggered: txtRpm.text = Connect.rpm()
     }
 
+    Text {
+        id: text1
+        x: 530
+        y: 340
+        width: 200
+        height: 60
+        color: "#ffffff"
+        text: qsTr("Text")
+        font.pixelSize: 40
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+    }
+
+    Text {
+        id: text2
+        x: 530
+        y: 70
+        width: 200
+        height: 175
+        color: "#ffffff"
+        text: qsTr("1")
+        font.pixelSize: 150
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        fontSizeMode: Text.HorizontalFit
+    }
 }
 
 /*##^##
