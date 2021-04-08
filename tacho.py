@@ -3,6 +3,7 @@ import os
 import can
 import time
 import threading
+import numpy as np
 from PySide2 import QtCore, QtWidgets, QtQml
 
 
@@ -11,22 +12,19 @@ bus = can.ThreadSafeBus(channel='can0', bustype='socketcan_native', bitrate=5000
 
 class Candata:
     rpm = 0
+    speed = 0
+    gear_ratio = [4.148 * 3.685, 3.3 * 3.685, 1.9 * 3.685, 1.42 * 3.685, 1 * 3.685, 0.713 * 3.685, 0.608 * 3.685]
+    tire_circumference = 1992.7 # milli meter
 
     def get_rpm(self):
         return self.rpm
 
-    def set_rpm(self, arg):
+    def get_speed(self):
+        return self.speed
+
+    def set_candata(self, arg):
         if not arg:
             return
-
-        #print(arg.data[2])
-        #ret = arg.split()
-        #print(ret)
-
-        #if ret[5] != '0C':
-        #    return
-
-        #self.rpm = int((int(ret[6], 16) * 256 + int(ret[7], 16)) / 4)
         
         if arg.arbitration_id != 0x7e8:
             return
@@ -34,12 +32,24 @@ class Candata:
         if arg.dlc < 3:
             return
 
-        if arg.data[2] != 0x0c:
+        if arg.data[2] == 0x0c:
+            self.rpm = int((arg.data[3] * 256 + arg.data[4]) / 4)
+        elif arg.data[2] == 0x0d:
+            self.speed = int(arg.data[3])
+        else:
             return
 
-        self.rpm = int((arg.data[3] * 256 + arg.data[4]) / 4)
+    def get_shit_pos(self):
+        if self.speed == 0:
+            return "-"
+        else:
+            g = self.tire_circumference * self.rpm * (60 / (self.speed * 1000000))
+            idx = np.abs(np.asarray(self.gear_ratio) - g).argmin()
 
-        print(self.rpm)
+            if idx == 0:
+                return "R"
+            else:
+                return idx
 
 
 candata = Candata()
@@ -57,7 +67,7 @@ class Connect(QtCore.QObject):
 def canscan_worker():
     for msg in bus:
         print(msg)
-        candata.set_rpm(msg)
+        candata.set_candata(msg)
 
 
 def cansend_worker():
@@ -86,8 +96,6 @@ if __name__ == "__main__":
 
     app.exec_()
 
-#    for msg in bus:
-#        candata.set_rpm(msg)
 
 #    candata.set_rpm('can0 7E8    [8] 04 41 0C 0C 7D 00 00 00')
 
