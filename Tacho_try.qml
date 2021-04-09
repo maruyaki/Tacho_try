@@ -31,7 +31,7 @@ Window {
         x: rectTacho.height / 2 + rectTacho.x
         y: rectTacho.height / 4 + rectTacho.y
         color: "#ffffff"
-        text: qsTr("4500")
+        text: qsTr("0")
         font.pixelSize: 40
         horizontalAlignment: Text.AlignRight
         font.bold: true
@@ -40,24 +40,28 @@ Window {
 
     Timer {
         interval: 500; running: true; repeat: true
-        onTriggered: txtRpm.text = Connect.rpm()
+        onTriggered: {
+            txtRpm.text = Connect.rpm();
+            txtSpeed.text = Connect.speed();
+            txtGear.text = Connect.gear();
+        }
     }
 
     Text {
-        id: text1
+        id: txtSpeed
         x: 530
         y: 340
         width: 200
         height: 60
         color: "#ffffff"
-        text: qsTr("Text")
+        text: qsTr("0")
         font.pixelSize: 40
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
     }
 
     Text {
-        id: text2
+        id: txtGear
         x: 530
         y: 70
         width: 200
