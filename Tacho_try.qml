@@ -6,6 +6,7 @@ Window {
     width: 800
     height: 480
     visible: true
+    visibility: "FullScreen"
     color: "#000000"
     title: qsTr("taco")
 
@@ -15,7 +16,7 @@ Window {
         x: Window.width / 3
         y: Window.height / 2
         width: 5
-        height: Window.height * 0.3
+        height: Window.height * 0.4
         color: "#ff0000"
 
         transform: Rotation{
@@ -39,7 +40,7 @@ Window {
 
 
     Timer {
-        interval: 500; running: true; repeat: true
+        interval: 100; running: true; repeat: true
         onTriggered: {
             txtRpm.text = Connect.rpm();
             txtSpeed.text = Connect.speed();

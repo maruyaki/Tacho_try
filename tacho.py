@@ -13,8 +13,8 @@ bus = can.ThreadSafeBus(channel='can0', bustype='socketcan_native', bitrate=5000
 class Candata:
     rpm = 0
     speed = 0
-    gear = "-"
-    gear_ratio = [4.148 * 3.685, 3.3 * 3.685, 1.9 * 3.685, 1.42 * 3.685, 1 * 3.685, 0.713 * 3.685, 0.608 * 3.685]
+    gear = 1 
+    gear_ratio = [3.3 * 3.685, 1.9 * 3.685, 1.42 * 3.685, 1 * 3.685, 0.713 * 3.685, 0.608 * 3.685]
     tire_circumference = 1992.7 # milli meter
 
     def get_rpm(self):
@@ -52,7 +52,7 @@ class Candata:
             g = self.tire_circumference * self.rpm * (60 / (self.speed * 1000000))
             idx = np.abs(np.asarray(self.gear_ratio) - g).argmin()
 
-            return idx
+            return idx + 1
 
 
 candata = Candata()
@@ -86,12 +86,12 @@ def cansend_worker():
         msg = can.Message(arbitration_id=0x7e0, is_extended_id=False,
                           data=[0x02, 0x01, 0x0c, 0x00, 0x00, 0x00, 0x00, 0x00])
         bus.send(msg)
-        time.sleep(0.25)
+        time.sleep(0.05)
 
         msg = can.Message(arbitration_id=0x7e0, is_extended_id=False,
                           data=[0x02, 0x01, 0x0d, 0x00, 0x00, 0x00, 0x00, 0x00])
         bus.send(msg)
-        time.sleep(0.25)
+        time.sleep(0.05)
 
 
 if __name__ == "__main__":
